@@ -1,0 +1,56 @@
+{
+  "$comment": "POST /channels/{channel.id}/messages from Discord's v10 Message resource. JSON is correct for a text-only message; files would require multipart/form-data and are deliberately outside this first action.",
+  "operation": "message_create",
+  "kind": "message",
+  "title": "Discord message",
+  "description": "Send a text message to a Discord channel.",
+  "summary": "send a Discord message",
+  "docs": "https://docs.discord.com/developers/resources/message#create-message",
+  "sideEffects": "idempotent",
+  "idempotency": "required",
+  "$idempotencyComment": "Discord's nonce is not merely echoed for correlation when enforce_nonce is true: for the same author and nonce within the past few minutes, Discord returns the earlier message and creates no duplicate. The 25-character maximum is enforced by every generated runtime. After Discord's short window expires, the same nonce can create another message, so hosts must not treat it as durable uniqueness.",
+  "request": {
+    "method": "POST",
+    "path": "/channels/{channelId}/messages",
+    "encoding": "json",
+    "constants": {
+      "enforce_nonce": true,
+      "allowed_mentions": { "parse": [] }
+    },
+    "$constantsComment": "enforce_nonce turns nonce from a correlation value into Discord's documented short-window deduplication key. Empty allowed_mentions.parse prevents user-authored content such as @everyone or role syntax from unexpectedly notifying people; Discord specifically recommends controlling mentions for user-generated strings."
+  },
+  "config": [
+    {
+      "type": "text",
+      "key": "channelId",
+      "label": "Channel ID",
+      "required": true,
+      "description": "The Discord snowflake for a guild text channel or DM channel. The bot must be present and have Send Messages permission there.",
+      "send": { "in": "path", "as": "channelId", "value": "string" }
+    },
+    {
+      "type": "textarea",
+      "key": "content",
+      "label": "Message",
+      "required": true,
+      "max": 2000,
+      "description": "Plain message content, up to Discord's 2,000-character limit. Mentions are rendered as text but do not notify because this action sends an empty allowed_mentions parse list.",
+      "send": { "in": "body", "as": "content", "value": "string", "max": 2000, "error": "content must be at most 2000 characters" }
+    }
+  ],
+  "outputShape": [
+    { "path": "data.id", "type": "string", "description": "The created message's Discord snowflake." },
+    { "path": "data.channel_id", "type": "string", "description": "The channel snowflake where Discord stored the message." },
+    { "path": "data.author", "type": "object", "description": "The bot user that authored the message." },
+    { "path": "data.content", "type": "string", "description": "The content Discord stored after stripping any invalid characters." },
+    { "path": "data.timestamp", "type": "string", "description": "The creation time as an ISO 8601 timestamp." },
+    { "path": "data.nonce", "type": "string", "description": "The supplied idempotency nonce, echoed on the message." },
+    { "path": "data.attachments", "type": "array", "description": "Attachment objects; empty for this text-only action." },
+    { "path": "data.embeds", "type": "array", "description": "Embed objects Discord derived or stored." }
+  ],
+  "$outputComment": "Create Message returns a Message object directly at the top level. Snowflakes are JSON strings even though they contain decimal digits, and nullable edited_timestamp is distinct from an omitted optional field.",
+  "contract": {
+    "sends": ["channelId", "content", "nonce", "enforce_nonce", "allowed_mentions"],
+    "reads": ["id", "channel_id", "author", "content", "timestamp", "edited_timestamp", "tts", "mention_everyone", "mentions", "mention_roles", "attachments", "embeds", "pinned", "type", "flags", "components", "nonce"]
+  }
+}

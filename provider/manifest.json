@@ -1,0 +1,34 @@
+{
+  "$comment": "THE hand-written part. Four packages are generated from this directory and are never edited. Discord's first-party v10 reference and its generated stable OpenAPI preview are the sources; where they disagree, Discord explicitly says the prose documentation wins.",
+  "connectorApi": 1,
+  "service": "discord",
+  "title": "Discord",
+  "domain": "messaging",
+  "docs": "https://docs.discord.com/developers/reference",
+  "auth": "api_key",
+  "requires": ["botToken"],
+  "authorize": {
+    "kind": "header",
+    "header": "Authorization",
+    "prefix": "Bot ",
+    "credential": "botToken",
+    "$comment": "A bot token authenticates as the application's dedicated bot user, not as a human through OAuth2. Discord requires the literal `Bot ` scheme; using Bearer would describe a user OAuth token and a different permission model."
+  },
+  "sandbox": "separate-account",
+  "$sandboxComment": "Discord has no alternate REST host or synthetic message estate. Its own tutorial requires a server for testing, so isolation is a dedicated test server and development-only application using the same v10 API.",
+  "sandboxNote": "Create a development-only Discord application, install its bot into a dedicated test server, and use a test channel id. Messages are real and can notify members of that server; production credentials sent in sandbox mode are not technically rejected.",
+  "baseUrls": { "live": "https://discord.com/api/v10", "sandbox": "https://discord.com/api/v10" },
+  "idempotencyField": "nonce",
+  "idempotencyMaxLength": 25,
+  "idempotencyNote": "Discord accepts a string nonce of at most 25 characters. With enforce_nonce true it deduplicates messages from the same author only within the past few minutes, returning the original message; this is a short retry window, not a permanent uniqueness guarantee.",
+  "encoding": "json",
+  "credentialFields": [
+    {
+      "key": "botToken",
+      "label": "Bot token",
+      "scope": "account",
+      "secret": true,
+      "help": "The token from the application's Bot page. Treat it as a password and install that bot into the target server with Send Messages permission."
+    }
+  ]
+}
