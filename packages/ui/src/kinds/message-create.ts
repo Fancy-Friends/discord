@@ -97,7 +97,6 @@ export const discordMessageKind: NodeKindDefinition = defineConnectorKind(DISCOR
       "key": "content",
       "label": "Message",
       "required": true,
-      "max": 2000,
       "description": "Plain message content, up to Discord's 2,000-character limit. Mentions are rendered as text but do not notify because this action sends an empty allowed_mentions parse list."
     }
   ],

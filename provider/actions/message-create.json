@@ -15,7 +15,9 @@
     "encoding": "json",
     "constants": {
       "enforce_nonce": true,
-      "allowed_mentions": { "parse": [] }
+      "allowed_mentions": {
+        "parse": []
+      }
     },
     "$constantsComment": "enforce_nonce turns nonce from a correlation value into Discord's documented short-window deduplication key. Empty allowed_mentions.parse prevents user-authored content such as @everyone or role syntax from unexpectedly notifying people; Discord specifically recommends controlling mentions for user-generated strings."
   },
@@ -26,31 +28,97 @@
       "label": "Channel ID",
       "required": true,
       "description": "The Discord snowflake for a guild text channel or DM channel. The bot must be present and have Send Messages permission there.",
-      "send": { "in": "path", "as": "channelId", "value": "string" }
+      "send": {
+        "in": "path",
+        "as": "channelId",
+        "value": "string"
+      }
     },
     {
       "type": "textarea",
       "key": "content",
       "label": "Message",
       "required": true,
-      "max": 2000,
       "description": "Plain message content, up to Discord's 2,000-character limit. Mentions are rendered as text but do not notify because this action sends an empty allowed_mentions parse list.",
-      "send": { "in": "body", "as": "content", "value": "string", "max": 2000, "error": "content must be at most 2000 characters" }
+      "send": {
+        "in": "body",
+        "as": "content",
+        "value": "string",
+        "max": 2000,
+        "error": "content must be at most 2000 characters"
+      },
+      "$maxComment": "Discord caps content at 2000 characters. That cannot be DECLARED here: fancy-flow puts max on a NumberConfigField only, and putting it on a textarea stops the generated ui package compiling. Recorded rather than dropped, because the limit is real and the next author will look for it."
     }
   ],
   "outputShape": [
-    { "path": "data.id", "type": "string", "description": "The created message's Discord snowflake." },
-    { "path": "data.channel_id", "type": "string", "description": "The channel snowflake where Discord stored the message." },
-    { "path": "data.author", "type": "object", "description": "The bot user that authored the message." },
-    { "path": "data.content", "type": "string", "description": "The content Discord stored after stripping any invalid characters." },
-    { "path": "data.timestamp", "type": "string", "description": "The creation time as an ISO 8601 timestamp." },
-    { "path": "data.nonce", "type": "string", "description": "The supplied idempotency nonce, echoed on the message." },
-    { "path": "data.attachments", "type": "array", "description": "Attachment objects; empty for this text-only action." },
-    { "path": "data.embeds", "type": "array", "description": "Embed objects Discord derived or stored." }
+    {
+      "path": "data.id",
+      "type": "string",
+      "description": "The created message's Discord snowflake."
+    },
+    {
+      "path": "data.channel_id",
+      "type": "string",
+      "description": "The channel snowflake where Discord stored the message."
+    },
+    {
+      "path": "data.author",
+      "type": "object",
+      "description": "The bot user that authored the message."
+    },
+    {
+      "path": "data.content",
+      "type": "string",
+      "description": "The content Discord stored after stripping any invalid characters."
+    },
+    {
+      "path": "data.timestamp",
+      "type": "string",
+      "description": "The creation time as an ISO 8601 timestamp."
+    },
+    {
+      "path": "data.nonce",
+      "type": "string",
+      "description": "The supplied idempotency nonce, echoed on the message."
+    },
+    {
+      "path": "data.attachments",
+      "type": "array",
+      "description": "Attachment objects; empty for this text-only action."
+    },
+    {
+      "path": "data.embeds",
+      "type": "array",
+      "description": "Embed objects Discord derived or stored."
+    }
   ],
   "$outputComment": "Create Message returns a Message object directly at the top level. Snowflakes are JSON strings even though they contain decimal digits, and nullable edited_timestamp is distinct from an omitted optional field.",
   "contract": {
-    "sends": ["channelId", "content", "nonce", "enforce_nonce", "allowed_mentions"],
-    "reads": ["id", "channel_id", "author", "content", "timestamp", "edited_timestamp", "tts", "mention_everyone", "mentions", "mention_roles", "attachments", "embeds", "pinned", "type", "flags", "components", "nonce"]
+    "sends": [
+      "channelId",
+      "content",
+      "nonce",
+      "enforce_nonce",
+      "allowed_mentions"
+    ],
+    "reads": [
+      "id",
+      "channel_id",
+      "author",
+      "content",
+      "timestamp",
+      "edited_timestamp",
+      "tts",
+      "mention_everyone",
+      "mentions",
+      "mention_roles",
+      "attachments",
+      "embeds",
+      "pinned",
+      "type",
+      "flags",
+      "components",
+      "nonce"
+    ]
   }
 }
