@@ -42,6 +42,7 @@ export const discordMessageExecutor: NodeExecutor = async (ctx) => {
   // failure "idempotent" exists to prevent.
   const idempotencyKey = idempotencyKeyFor(ctx, ctx.node.id, {
     context: { service: "discord", operation: "message_create" },
+    maxLength: 25,
   });
   if (idempotencyKey === null) {
     ctx.emit({

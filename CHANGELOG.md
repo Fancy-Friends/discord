@@ -3,6 +3,16 @@
 All notable changes to `@particle-academy/discord-ui`,
 `@particle-academy/discord-js`, `particle-academy/discord-php` and `fancy-discord`.
 
+## [0.1.3] — 2026-09-12
+
+### Fixed
+
+- **An idempotency key longer than Discord's 25-character limit is now fitted to it instead of refused.** `Idempotency::keyFor` in the php executor and `idempotencyKeyFor` in the js one receive `maxLength: 25`, so an engine-derived `<runKey>:<nodeId>` that exceeds the limit is shortened by the core to a stable digest — the same key on every retry — rather than rejected by this package's own validation with `idempotencyKey must be at most 25 characters`. Before this, a durable run with a normal-length run identity died at `message_create` and nothing a host could do short of choosing a shorter identity would fix it. Found by the connector lab; the core's half shipped as fancy-connector-core 0.4.0.
+
+### Changed
+
+- **Requires `fancy-connector-core` ≥ 0.4.0** — `particle-academy/fancy-connector-core` for php, `@particle-academy/fancy-connector-core` for js. The flow executors now pass a provider's declared `idempotencyMaxLength` through to the core's key derivation, and a named argument an older core does not accept is a fatal rather than a no-op, so the floor moves with it. For this connector that is the fix above.
+
 ## [0.1.2] — 2026-09-11
 
 ### Added

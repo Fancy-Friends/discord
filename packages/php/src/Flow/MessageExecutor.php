@@ -113,7 +113,7 @@ final class MessageExecutor implements NodeExecutor
         // failure "idempotent" exists to prevent. It travels in the BODY, as
         // `nonce`, and is deliberately NOT also handed to the client, which only
         // knows how to send one as a header.
-        $idempotencyKey = Idempotency::keyFor($ctx, $ctx->node->id, service: Discord::SERVICE, operation: MessageCreate::OPERATION);
+        $idempotencyKey = Idempotency::keyFor($ctx, $ctx->node->id, service: Discord::SERVICE, operation: MessageCreate::OPERATION, maxLength: 25);
         if ($idempotencyKey === null) {
             $ctx->emit(RunEvent::log('warn', MessageCreate::OPERATION.': '.Idempotency::NO_KEY_WARNING, $ctx->node->id));
         }
