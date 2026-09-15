@@ -30,6 +30,12 @@ it('message_create fakes the shape Discord publishes', function () {
 
     $faked = DiscordFaker::respond('message_create', ['config' => $config, 'fake' => $fake]);
 
+    // Through JSON and back, because a faked EMPTY object is a stdClass — the only
+    // PHP value that spells `{}` on the wire — and `toBe` compares objects by
+    // identity. This asserts the VALUES; the `{}`-versus-`[]` spelling is what
+    // weaver's cross-runtime parity suite asserts, byte for byte.
+    $faked = json_decode((string) json_encode($faked), true, 512, JSON_THROW_ON_ERROR);
+
     expect($faked)->toBe([
         'id' => '1409987654321098765',
         'channel_id' => '1409123456789012345',

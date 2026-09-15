@@ -48,7 +48,7 @@ final class DiscordFaker
     }
 
     /** @param array<string,mixed> $config */
-    private static function MessageCreate(array $config, mixed $fake): array
+    private static function MessageCreate(array $config, mixed $fake): array|\stdClass
     {
         return [
         'id' => '1409987654321098765',
