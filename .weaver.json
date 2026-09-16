@@ -51,7 +51,7 @@
     "packages/py/src/fancy_discord/_runtime.py": "9249b406ae37a0b82a6270069e9e737938e1025e7662bc763f3a23297de58671",
     "packages/py/src/fancy_discord/actions/__init__.py": "227b03d0fc015c581d6d43547049f1c269d7d0819aca31de5abbce1a2a1e74ed",
     "packages/py/src/fancy_discord/actions/message_create.py": "592a468c112989f145921a9893a2c970ad009952dc951dc3de063b9567e065be",
-    "packages/py/src/fancy_discord/faker.py": "a45d22f412e06d147c3d1f8f71b893ca3365571dd890671eaea836872a527078",
+    "packages/py/src/fancy_discord/faker.py": "bacdb45a07e733c8e64488d9c94e6576e20e7fb7de2fec251e96c3523ef168b8",
     "packages/py/src/fancy_discord/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "packages/py/src/fancy_discord/service.py": "aecffbba39bc4542e96bb4f261b8b5130e02dd0c808c9f05223b0c6fedbac894",
     "packages/py/tests/test_faker.py": "6ef01b7fb84df3b4314bc39362f19bfe55f28074879360100ced9c6c481ea927",
