@@ -20,6 +20,6 @@ return [
 
     'credentials' => [
         // Bot token (per connected account, secret).
-        'botToken' => env('DISCORD_BOTTOKEN'),
+        'botToken' => env('DISCORD_BOT_TOKEN', env('DISCORD_BOTTOKEN')),
     ],
 ];
