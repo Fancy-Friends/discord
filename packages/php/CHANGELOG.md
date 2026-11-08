@@ -3,6 +3,19 @@
 All notable changes to `@particle-academy/discord-ui`,
 `@particle-academy/discord-js`, `particle-academy/discord-php` and `fancy-discord`.
 
+## [0.2.1] — 2026-11-08
+
+### Fixed
+
+- **The Laravel config's environment variable names now split camelCase**,
+  as documented. **Consumer action: none.** The old unsplit names are still
+  read as a fallback, so an app that set them keeps working; the new names
+  are preferred.
+
+  | Preferred | Still read |
+  |---|---|
+  | `DISCORD_BOT_TOKEN` | `DISCORD_BOTTOKEN` |
+
 ## [0.2.0] — 2026-11-08
 
 ### Added
