@@ -3,6 +3,27 @@
 All notable changes to `@particle-academy/discord-ui`,
 `@particle-academy/discord-js`, `particle-academy/discord-php` and `fancy-discord`.
 
+## [0.2.0] — 2026-11-08
+
+### Added
+
+- **Laravel integration, in this package** (`src/Laravel/`), auto-discovered
+  through composer's `extra.laravel`. Laravel is SUGGESTED, never required:
+  outside a Laravel app none of it loads.
+  - a service provider that merges `config/discord.php` under
+    `connectors.discord` (credentials from the environment, or per call for a
+    multi-account app);
+  - the `Discord` facade: `Discord::call('<operation>', [...])` runs any action;
+  - `Discord::fake()`, answered from the connector's faker, with
+    `assertSent` / `assertNotSent` / `assertNothingSent` / `assertSentCount`;
+  - its own Pest test of all of it against a booted Laravel app.
+
+### Changed
+
+- **Tests: Pest `^5`**, and `laravel/framework` `^13` as a DEV-ONLY test
+  dependency (the framework this package integrates with; nothing ships in
+  `require`).
+
 ## [0.1.3] — 2026-09-12
 
 ### Fixed
